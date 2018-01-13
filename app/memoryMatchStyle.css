@@ -7,8 +7,16 @@
   margin: 1px;
 }
 
-.fixed-size {
+.bluesquare p {
+    display: none;
+}
 
+.timing {
+  margin-left: 50px;
+  margin-top: 20px;
+}
+
+.fixed-size {
   height: 300px;
 }
 

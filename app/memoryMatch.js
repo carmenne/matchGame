@@ -1,5 +1,5 @@
 <!-- Functions -->
-
+var counterStarted = false;
 // max is excluseive
 function getRandomInteger(min, max) {
 
@@ -55,7 +55,8 @@ function createFullAnswer() {
 function initializeGrid(values) {
 
   for (var i = 1; i < 10; i++) {
-    document.getElementById('c' + i).innerHTML = values[i - 1];
+    console.log(document.getElementById('c' + i).children[0]);
+    document.getElementById('c' + i).children[0].innerHTML = values[i - 1];
   }
 }
 
@@ -66,8 +67,27 @@ function clearGrid() {
 function changeColorOnMouseOver(el, color) {
 
   if (el.classList.contains('bluesquare')) {
-    el.style.backgroundColor = color;
+      el.style.backgroundColor = color;
   }
+}
+
+function displayTheValue(el) {
+
+  if (el.classList.contains('bluesquare')) {
+      el.children[0].style.display = 'block';
+  }
+}
+
+function startCounter() {
+
+  var start = new Date().getTime();
+
+  setInterval( function() {
+    var time = new Date().getTime() - start;
+    document.getElementById('elapsedTime').innerHTML = "Time elapsed: " +
+      Math.floor(time / 1000);
+  }, 1000)
+
 }
 
 <!-- DOM manipulation -->
@@ -80,6 +100,17 @@ $(document).ready(function() {
 
   document.addEventListener('mouseout', function(event) {
     changeColorOnMouseOver(event.target, "blue");
+  });
+
+  document.addEventListener('click', function(event) {
+
+    if (!counterStarted) {
+      startCounter();
+      counterStarted = true;
+    }
+
+    changeColorOnMouseOver(event.target, "red");
+    displayTheValue(event.target);
   });
 
 });
