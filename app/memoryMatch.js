@@ -1,5 +1,9 @@
+<!-- Variables -->
+var started = false,
+    clicked = {}; // {'value1':['el1'], 'value2':['el1', 'el2']}
+
+
 <!-- Functions -->
-var counterStarted = false;
 // max is excluseive
 function getRandomInteger(min, max) {
 
@@ -55,7 +59,6 @@ function createFullAnswer() {
 function initializeGrid(values) {
 
   for (var i = 1; i < 10; i++) {
-    console.log(document.getElementById('c' + i).children[0]);
     document.getElementById('c' + i).children[0].innerHTML = values[i - 1];
   }
 }
@@ -67,7 +70,9 @@ function clearGrid() {
 function changeColorOnMouseOver(el, color) {
 
   if (el.classList.contains('bluesquare')) {
+    if (el.style.backgroundColor !== 'purple') {
       el.style.backgroundColor = color;
+    }
   }
 }
 
@@ -90,6 +95,24 @@ function startCounter() {
 
 }
 
+function handleMatch(el) {
+  if (el.classList.contains('bluesquare')) {
+      var prop = el.children[0].innerHTML;
+      var id = el.id.replace("c", "");
+      if (clicked[prop]) {
+        // it's a match
+        el.style.backgroundColor = 'purple';
+        document.getElementById('c'+clicked[prop]).style.backgroundColor = 'purple';
+        clicked[prop].push(id);
+
+      } else {
+        var v = [];
+        v.push(id);
+        clicked[prop] = v;
+      }
+  }
+}
+
 <!-- DOM manipulation -->
 $(document).ready(function() {
   initializeGrid(createFullAnswer());
@@ -104,10 +127,12 @@ $(document).ready(function() {
 
   document.addEventListener('click', function(event) {
 
-    if (!counterStarted) {
+    if (!started) {
       startCounter();
-      counterStarted = true;
+      started = true;
     }
+
+    handleMatch(event.target);
 
     changeColorOnMouseOver(event.target, "red");
     displayTheValue(event.target);
