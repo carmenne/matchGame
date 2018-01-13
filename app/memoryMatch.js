@@ -4,6 +4,7 @@ var started = false,
     start = 0,
     elapsedTimeInterval, // interval function
     matchedPairs = 0,
+    elapsedTime = 0;
     clickedValues = [],
     clickedIds = [];
 
@@ -94,9 +95,9 @@ function startCounter() {
   start = new Date().getTime();
 
   elapsedTimeInterval = setInterval( function() {
-    var time = new Date().getTime() - start;
+    elapsedTime = new Date().getTime() - start;
     document.getElementById('elapsedTime').innerHTML = "Time elapsed: " +
-      Math.floor(time / 1000);
+      Math.floor(elapsedTime / 1000);
   }, 1000);
 
 }
@@ -142,7 +143,8 @@ function makeBorderRed() {
 function finishRound() {
   finished = true;
   cleanInternals();
-  document.getElementById('elapsedTime').innerHTML = "Congrats!";
+  document.getElementById('elapsedTime').innerHTML = "Congrats! It took: " +
+    Math.floor(elapsedTime / 1000) + " s";
 }
 
 function handleMatch(el) {
