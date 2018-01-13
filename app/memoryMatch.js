@@ -1,7 +1,7 @@
 <!-- Variables -->
 var started = false,
-    clicked = {}; // {'value1':['el1'], 'value2':['el1', 'el2']}
-
+    clickedValues = [],
+    clickedIds = [];
 
 <!-- Functions -->
 // max is excluseive
@@ -67,20 +67,16 @@ function clearGrid() {
   initializeGrid(createFullAnswer());
 }
 
-function changeColorOnMouseOver(el, color) {
-
-  if (el.classList.contains('bluesquare')) {
-    if (el.style.backgroundColor !== 'purple') {
-      el.style.backgroundColor = color;
-    }
-  }
+function changeColor(el, color) {
+    el.style.backgroundColor = color;
 }
 
-function displayTheValue(el) {
+function showTheValue(el) {
+  el.children[0].style.display = 'block';
+}
 
-  if (el.classList.contains('bluesquare')) {
-      el.children[0].style.display = 'block';
-  }
+function hideTheValue(el) {
+  el.children[0].style.display = 'none';
 }
 
 function startCounter() {
@@ -95,47 +91,106 @@ function startCounter() {
 
 }
 
-function handleMatch(el) {
-  if (el.classList.contains('bluesquare')) {
-      var prop = el.children[0].innerHTML;
-      var id = el.id.replace("c", "");
-      if (clicked[prop]) {
-        // it's a match
-        el.style.backgroundColor = 'purple';
-        document.getElementById('c'+clicked[prop]).style.backgroundColor = 'purple';
-        clicked[prop].push(id);
+function reset(el) {
 
-      } else {
-        var v = [];
-        v.push(id);
-        clicked[prop] = v;
-      }
+  document.getElementById("matchGrid").style.border = '';
+  if (el.style.backgroundColor !== 'purple') {
+    changeColor(el,'blue');
+    hideTheValue(el);
   }
+
+
+}
+function markFound(el) {
+    changeColor(el,'purple');
+    showTheValue(el);
+}
+
+function storeValues(id, val) {
+  clickedIds.push(id);
+  clickedValues.push(val);
+}
+
+function clean() {
+  clickedIds = [];
+  clickedValues = [];
+}
+
+function makeBorderRed() {
+  document.getElementById("matchGrid").style.border = "5px solid red";
+}
+
+function handleMatch(el) {
+  var value = el.children[0].innerHTML;
+  var id = el.id.replace("c", "");
+
+  switch (clickedIds.length) {
+    case 0: // just created
+      storeValues(id, value);
+      break;
+    case 1: // matching pair?
+
+      if (id === clickedIds[0]) {
+        // clicked on same element twice, do nothing
+      } else if (value === clickedValues[0]){
+        // Matching pair
+        markFound(el);
+        markFound(document.getElementById('c' + clickedIds[0]));
+      } else {
+
+        makeBorderRed();
+
+        setTimeout( function() {
+          reset(el);
+          reset(document.getElementById('c' + clickedIds[0]));
+          clean();}, 400);
+
+      }
+
+      break;
+    default:
+
+  }
+
 }
 
 <!-- DOM manipulation -->
 $(document).ready(function() {
   initializeGrid(createFullAnswer());
 
+
+<!-- Events listeners -->
   document.addEventListener('mouseover', function(event) {
-    changeColorOnMouseOver(event.target, "orange");
+
+    if (!event.target.classList.contains('bluesquare')) {
+      return;
+    }
+
+    changeColor(event.target, "orange");
   });
 
   document.addEventListener('mouseout', function(event) {
-    changeColorOnMouseOver(event.target, "blue");
+    if (event.target.style.backgroundColor === 'orange') {
+      changeColor(event.target, "blue");
+    }
   });
 
   document.addEventListener('click', function(event) {
+    if (!event.target.classList.contains('bluesquare')) {
+      return;
+    }
+
+    var el = event.target;
+    changeColor(el, "red", "click");
+    showTheValue(el);
 
     if (!started) {
       startCounter();
       started = true;
     }
 
-    handleMatch(event.target);
+    handleMatch(el);
 
-    changeColorOnMouseOver(event.target, "red");
-    displayTheValue(event.target);
   });
 
 });
