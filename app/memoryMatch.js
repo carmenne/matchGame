@@ -1,7 +1,9 @@
 <!-- Variables -->
 var started = false,
-    start,
-    elapsedTimeInterval,
+    finished = false,
+    start = 0,
+    elapsedTimeInterval, // interval function
+    matchedPairs = 0,
     clickedValues = [],
     clickedIds = [];
 
@@ -72,6 +74,7 @@ function initializeGrid(values) {
 function resetGrid() {
   initializeGrid(createFullAnswer());
   cleanInternals();
+  finished = false;
 }
 
 function changeColor(el, color) {
@@ -128,11 +131,18 @@ function cleanInternals() {
   clickedValues = [];
   clickedIds = [];
   start = 0;
+  matchedPairs = 0;
   clearInterval(elapsedTimeInterval);
 }
 
 function makeBorderRed() {
   document.getElementById("matchGrid").style.border = "5px solid red";
+}
+
+function finishRound() {
+  finished = true;
+  cleanInternals();
+  document.getElementById('elapsedTime').innerHTML = "Congrats!";
 }
 
 function handleMatch(el) {
@@ -152,7 +162,13 @@ function handleMatch(el) {
         // Matching pair
         markFound(el);
         markFound(prevEl);
+        matchedPairs++;
         clean();
+
+        if (matchedPairs == 4) {
+          // That's the end
+          finishRound();
+        }
       } else {
 
         makeBorderRed();
@@ -175,9 +191,12 @@ function handleMatch(el) {
 $(document).ready(function() {
   initializeGrid(createFullAnswer());
 
+  <!-- Events listeners -->
+  document.addEventListener('mouseover', function(event) {
 
-<!-- Events listeners -->
-    document.addEventListener('mouseover', function(event) {
+    if (finished) {
+      return;
+    }
 
     var el = event.target;
     if (!el.classList.contains('bluesquare')) {
@@ -192,12 +211,22 @@ $(document).ready(function() {
   });
 
   document.addEventListener('mouseout', function(event) {
+
+    if (finished) {
+      return;
+    }
+
     if (event.target.style.backgroundColor === 'orange') {
       changeColor(event.target, "blue");
     }
   });
 
   document.addEventListener('click', function(event) {
+    
+    if (finished) {
+      return;
+    }
+
     if (!event.target.classList.contains('bluesquare')) {
       return;
     }
