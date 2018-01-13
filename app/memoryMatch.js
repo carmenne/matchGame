@@ -61,6 +61,7 @@ function initializeGrid(values) {
   for (var i = 1; i < 10; i++) {
     document.getElementById('c' + i).children[0].innerHTML = values[i - 1];
     document.getElementById('c' + i).style.backgroundColor = "blue";
+    document.getElementById('c' + i).children[0].style.display = 'none';
   }
 }
 
