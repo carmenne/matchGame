@@ -60,6 +60,7 @@ function initializeGrid(values) {
 
   for (var i = 1; i < 10; i++) {
     document.getElementById('c' + i).children[0].innerHTML = values[i - 1];
+    document.getElementById('c' + i).style.backgroundColor = "blue";
   }
 }
 
@@ -94,15 +95,15 @@ function startCounter() {
 function reset(el) {
 
   document.getElementById("matchGrid").style.border = '';
-  if (el.style.backgroundColor !== 'purple') {
-    changeColor(el,'blue');
+  if (el.style.backgroundColor !== "purple") {
+    changeColor(el,"blue");
     hideTheValue(el);
   }
 
 
 }
 function markFound(el) {
-    changeColor(el,'purple');
+    changeColor(el,"purple");
     showTheValue(el);
 }
 
@@ -130,19 +131,21 @@ function handleMatch(el) {
       break;
     case 1: // matching pair?
 
+      var prevEl = document.getElementById('c' + clickedIds[0]);
       if (id === clickedIds[0]) {
         // clicked on same element twice, do nothing
       } else if (value === clickedValues[0]){
         // Matching pair
         markFound(el);
-        markFound(document.getElementById('c' + clickedIds[0]));
+        markFound(prevEl);
+        clean();
       } else {
 
         makeBorderRed();
 
         setTimeout( function() {
           reset(el);
-          reset(document.getElementById('c' + clickedIds[0]));
+          reset(prevEl);
           clean();}, 400);
 
       }
@@ -160,13 +163,18 @@ $(document).ready(function() {
 
 
 <!-- Events listeners -->
-  document.addEventListener('mouseover', function(event) {
+    document.addEventListener('mouseover', function(event) {
 
-    if (!event.target.classList.contains('bluesquare')) {
+    var el = event.target;
+    if (!el.classList.contains('bluesquare')) {
       return;
     }
 
-    changeColor(event.target, "orange");
+    if (el.style.backgroundColor !== "blue") {
+      return;
+    }
+
+    changeColor(el, "orange");
   });
 
   document.addEventListener('mouseout', function(event) {
