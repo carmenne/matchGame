@@ -22,7 +22,7 @@ function createAnswers() {
   var answers = [],
       i = 0;
 
-  while (i < 4) {
+  while (i < 5) {
     var answer = getRandomInteger(1, 10);
     if (answers.indexOf(answer) === -1) {
       answers.push(answer);
@@ -54,9 +54,9 @@ function shuffle(input) {
 function createFullAnswer() {
 
   var half = createAnswers();
-  var full = half.concat(half).concat([""]);
+  var full = half.concat(half);
 
-  return shuffle(full);
+  return shuffle(full).slice(0,10);
 
 }
 
@@ -188,7 +188,8 @@ function handleMatch(el) {
 }
 
 <!-- DOM manipulation -->
-$(document).ready(function() {
+if (undefined != window) {
+  window.addEventListener('load', function() {
   initializeGrid(createFullAnswer());
 
   <!-- Events listeners -->
@@ -222,7 +223,7 @@ $(document).ready(function() {
   });
 
   document.addEventListener('click', function(event) {
-    
+
     if (finished) {
       return;
     }
@@ -240,11 +241,13 @@ $(document).ready(function() {
       started = true;
     }
 
+
     handleMatch(el);
 
   });
 
 });
+}
 
 module.exports.getRandomInteger = getRandomInteger;
 module.exports.createAnswers = createAnswers;

@@ -1,4 +1,5 @@
 var game = require("../app/memoryMatch.js");
+var window = undefined;
 
 describe("Memory Match game suite", function() {
 
@@ -16,7 +17,7 @@ describe("Memory Match game suite", function() {
       for (var i = 0; i < 100; i++) {
         var items = game.createAnswers();
         var uniqueItems = [...new Set(items)]
-        expect(items.length).toBe(4);
+        expect(items.length).toBe(5);
       }
     });
 
@@ -30,6 +31,8 @@ describe("Memory Match game suite", function() {
       "which is the double of an array of 4 integers]", function() {
       var actual = game.createFullAnswer();
       var actualSorted = actual.slice().sort();
+      
+      expect(actual.length).toBe(9);
       expect(actual).not.toBe(actualSorted);
     });
   });

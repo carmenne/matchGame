@@ -5,6 +5,7 @@
   "main": "memoryMatch.js",
   "dependencies": {
     "express": "^4.16.2",
+    "mock-browser": "^0.92.14",
     "request": "^2.83.0"
   },
   "devDependencies": {},
