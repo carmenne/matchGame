@@ -63,9 +63,25 @@ function clearGrid() {
   initializeGrid(createFullAnswer());
 }
 
+function changeColorOnMouseOver(el, color) {
+
+  if (el.classList.contains('bluesquare')) {
+    el.style.backgroundColor = color;
+  }
+}
+
 <!-- DOM manipulation -->
 $(document).ready(function() {
   initializeGrid(createFullAnswer());
+
+  document.addEventListener('mouseover', function(event) {
+    changeColorOnMouseOver(event.target, "orange");
+  });
+
+  document.addEventListener('mouseout', function(event) {
+    changeColorOnMouseOver(event.target, "blue");
+  });
+
 });
 
 module.exports.getRandomInteger = getRandomInteger;
