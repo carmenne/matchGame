@@ -1,0 +1,28 @@
+{
+  "name": "memory_match",
+  "version": "1.0.0",
+  "description": "Memory match game",
+  "main": "memoryMatch.js",
+  "dependencies": {
+    "express": "^4.16.2",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-node spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/carmenne/matchGame.git"
+  },
+  "keywords": [
+    "game",
+    "match"
+  ],
+  "author": "Carmen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carmenne/matchGame/issues"
+  },
+  "homepage": "https://github.com/carmenne/matchGame#readme"
+}
