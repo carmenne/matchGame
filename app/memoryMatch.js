@@ -55,8 +55,12 @@ function createFullAnswer() {
 function initializeGrid(values) {
 
   for (var i = 1; i < 10; i++) {
-    document.getElementById('c' + i).append(values[i - 1]);
+    document.getElementById('c' + i).innerHTML = values[i - 1];
   }
+}
+
+function clearGrid() {
+  initializeGrid(createFullAnswer());
 }
 
 <!-- DOM manipulation -->
