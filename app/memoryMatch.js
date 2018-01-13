@@ -1,5 +1,7 @@
 <!-- Variables -->
 var started = false,
+    start,
+    elapsedTimeInterval,
     clickedValues = [],
     clickedIds = [];
 
@@ -58,6 +60,8 @@ function createFullAnswer() {
 
 function initializeGrid(values) {
 
+  document.getElementById('elapsedTime').innerHTML = "";
+
   for (var i = 1; i < 10; i++) {
     document.getElementById('c' + i).children[0].innerHTML = values[i - 1];
     document.getElementById('c' + i).style.backgroundColor = "blue";
@@ -65,8 +69,9 @@ function initializeGrid(values) {
   }
 }
 
-function clearGrid() {
+function resetGrid() {
   initializeGrid(createFullAnswer());
+  cleanInternals();
 }
 
 function changeColor(el, color) {
@@ -83,13 +88,13 @@ function hideTheValue(el) {
 
 function startCounter() {
 
-  var start = new Date().getTime();
+  start = new Date().getTime();
 
-  setInterval( function() {
+  elapsedTimeInterval = setInterval( function() {
     var time = new Date().getTime() - start;
     document.getElementById('elapsedTime').innerHTML = "Time elapsed: " +
       Math.floor(time / 1000);
-  }, 1000)
+  }, 1000);
 
 }
 
@@ -116,6 +121,14 @@ function storeValues(id, val) {
 function clean() {
   clickedIds = [];
   clickedValues = [];
+}
+
+function cleanInternals() {
+  started = false;
+  clickedValues = [];
+  clickedIds = [];
+  start = 0;
+  clearInterval(elapsedTimeInterval);
 }
 
 function makeBorderRed() {
