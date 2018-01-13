@@ -3,8 +3,8 @@
   width: 10px;
   height: 100px;
   border: 5px solid black;
-  text-align: center;
   padding: 1px;
+  text-align: center;
 }
 
 .bluesquare p {
@@ -17,8 +17,9 @@
 }
 
 .fixed-size {
-  width: 300px;
-  height: 310px;
+  width: 312px;
+  height: 312px;
+  padding: 1px;
   border: 5px solid black;
 }
 
